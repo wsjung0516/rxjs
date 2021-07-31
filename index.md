@@ -4,9 +4,17 @@ You can use the [editor on GitHub](https://github.com/wsjung0516/rxjs-technics/e
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+```markdown
+###Technic 1
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+####Requirement:
+
+1. Getting the file infomation from SubItem source.
+2. Data has the array of Item, but need only the first SubItem.
+3. Item has the array of File;
+
+```
+
 ```ts
 Conditions
 1. Need to connect to remote server that has the data.
