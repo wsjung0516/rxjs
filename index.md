@@ -7,6 +7,50 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 ### Markdown
 
 Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+```ts
+Conditions
+1. Need to connect to remote server that has the data.
+2. Consider async communication to get the data through http connection
+3. Three step nested structure, first and second step has each children;
+
+class Data {
+    itemList: Item[];
+}
+class Item {
+    sub_item: SubItem[];
+}
+class SubItem {
+    item: File;
+}
+
+getMain( data: Data) {
+    const dataList = data.itemList; //1. Data has sub item list
+    return from(dataList).pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap( item => {         //2. each item need to get sub_items from server without considering response sequence.
+            const url1 = `http://${defined_host_ip}:3333/sub_items`
+            return this.http.get(url1).pipe(
+                map( val => val[0]),    //3. This return value has multiple sub_items and only need the first item
+                toArray(),              //4. Whenver mergeMap(2) working, the result data (3) is accumulated with array format.
+                switchMap( n_sub_items => {   //5. After step(4), new arrary data is created, and this data baton passed to the next step.  
+                    return from(n_sub_items).pipe(  //6. From this step, start again the same step as (1)
+                        takeUntil(this.unsubscribe$),
+                        mergeMap( item => {         //7. This step is the same as step(2)
+                            const url2 =`http://${defined_hist_ip2}:3334/preview`;  
+                            return this.http.get(url2, {responseType: 'blob'}).pipe(    //8. Get the item's data.
+                                tap( resp => {
+                                    someFunction(resp); //9. Do the final step
+                                })
+                            )
+                        })
+                    )
+                })
+            )
+        }),
+    ).subscribe()
+}
+```
+## New technics
 
 ```markdown
 Syntax highlighted code block
