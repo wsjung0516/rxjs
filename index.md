@@ -12,7 +12,7 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 2. Data has the array of Item, but need only the first SubItem.
 3. Item has the array of File;
 
-![sample](/assets/images/sixth.jpg)
+![sample](/assets/images/technic1.png)
 
 ```markdown
 
