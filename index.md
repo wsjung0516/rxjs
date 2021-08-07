@@ -1,9 +1,18 @@
-## Welcome to GitHub Pages
+## Welcome to William's Notes
 
-You can use the [editor on GitHub](https://github.com/wsjung0516/rxjs-technics/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+This page is aims to share my knowlege about rxjs techics. 
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+### Technic1: 
+1. From the array, each item use as a part of url for the first http communication
+2. Result of the first http comm. must use as part or url to get the second result from remote server
+3. With the second result, get the image url.
+
 [technic1](/technic1.md)
+
+
+### Technic2:
+
+[technic2](/technic2.md)
 
 ## New technics
 
