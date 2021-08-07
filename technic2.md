@@ -2,89 +2,63 @@
 
 
 ```ts
-    onDownloadAnnotationsDataStudies() {
-        let fullJSONDataByStudyUIDs = {};
-        return from(this.selectedStudies).pipe(
+downloadJsonData() {
+    let savedJson = {};
+    return from(this.selectedStudies).pipe(
+        takeUntil(this.unsubscribe$),
+        mergeMap((studyArray: Study) => {
+            const st = studyArray;
+            savedJson[st.suid] = {};
+            return http.get.getSeriesOfStudy(st.suid);
+        }),
+        toArray(), // One dimensional array [a,b,c]
+    ).subscribe((seriesArray) => {
+        from(seriesArray).pipe(
             takeUntil(this.unsubscribe$),
-            mergeMap((selectedStudy: Study) => {
-                const st = selectedStudy;
-                fullJSONDataByStudyUIDs[selectedStudy.study_instance_uid] = {};
-                return this.restAPIService.getSeriesOfStudy(st.study_instance_uid);
+            mergeMap((series: Series[]) => {
+                const se = series;  // each series has series id (seid) and study id (suid)
+                savedJson[se.suid][se.seid] = {};
+                return http.get.getNodules(se.seid); // each series has multi nodule
             }),
-            toArray(),
-        ).subscribe((seriesList) => {
-            from(seriesList).pipe(
+            toArray() // Two dimensional array [[a,b,c],[aa,bb,cc],[aaa,bbb,ccc]]
+        ).subscribe((nodulesList: any[]) => {
+            from(nodulesList).pipe(
                 takeUntil(this.unsubscribe$),
-                mergeMap((series: Series[]) => {
-                    const se = series[0];
-                    fullJSONDataByStudyUIDs[se.study_instance_uid][se.series_instance_uid] = {};
-                    return this.restAPIService.getNodules(se.series_instance_uid, this.userId);
-                }),
-                toArray()
-            ).subscribe((noduleList: any[]) => {
-                from(noduleList).pipe(
-                    takeUntil(this.unsubscribe$),
-                    map(nodules => {
-                        return from(nodules).pipe(
-                            takeUntil(this.unsubscribe$),
-                            map(noduleData => {
-                                const st = noduleData['study_instance_uid'];
-                                const se = noduleData['series_instance_uid'];
-                                
-                                if (!fullJSONDataByStudyUIDs[st][se][noduleData['sop_instance_uid']]) {
-                                    fullJSONDataByStudyUIDs[st][se][noduleData['sop_instance_uid']] = [];
-                                }
-                                // OcViewerProxy.makeCornerstoneToolsDataForNodule(noduleData);
-                                OcViewerProxy.generateCstDataForNodule(noduleData);
-                                const defaultData = {
-                                    probe: {x: noduleData['nodule_coordinate_x'], y: noduleData['nodule_coordinate_y']},
-                                    length: noduleData['long_diameter'],
-                                    nodule_uuid: noduleData['nodule_uuid'],
-                                    series_instance_index: noduleData['series_instance_index']
-                                };
-                                
-                                const jsonData = JSON.parse(noduleData['nodule_segments_info_json']);
-                                
-                                // the freehandroi -> bidirectional order must be kept
-                                if (jsonData.freehandroi_cst_data) {
-                                    let annotationData = {...defaultData};
-                                    annotationData['type'] = 'polygon';
-                                    annotationData['polygon'] = jsonData.freehandroi_cst_data;
-                                    annotationData['annotation_uuid'] = jsonData.freehandroi_cst_data.uuid;
-                                    fullJSONDataByStudyUIDs[st][se][noduleData['sop_instance_uid']].push(annotationData);
-                                }
-                                if (jsonData.bidirectional_solid_cst_data) {
-                                    let annotationData = {...defaultData};
-                                    annotationData['type'] = 'axes';
-                                    annotationData['axes'] = jsonData.bidirectional_solid_cst_data;
-                                    annotationData['annotation_uuid'] = jsonData.bidirectional_solid_cst_data.uuid;
-                                    fullJSONDataByStudyUIDs[st][se][noduleData['sop_instance_uid']].push(annotationData);
-                                }
-                                return fullJSONDataByStudyUIDs;
-                            }),
-                            distinctUntilChanged(),
-                            toArray(),
-                        ).subscribe(fval => {
-                            if (JSON.stringify(this.oldObj) !== JSON.stringify(fval)) { // remove duplicated data
-                                this.oldObj = fval;
-                                const keys = Object.keys(fval[0]);
-                                // console.log('keys',keys);
-                                from(keys).pipe(
-                                    takeUntil(this.unsubscribe$),
-                                    concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))),
-                                    tap(key => {
-                                        const data = JSON.stringify(fval[0][key]);
-                                        const blob = new Blob([data], {type: 'application/json'});
-                                        // save files at the download directory
-                                        saveAs(blob, key);
-                                    })
-                                ).subscribe();
+                map(nodules => {
+                    return from(nodules).pipe(
+                        takeUntil(this.unsubscribe$),
+                        map(noduleData => {
+                            const st = noduleData['suid'];
+                            const se = noduleData['seid'];
+
+                            if (!savedJson[st][se][noduleData['sopid']]) {
+                                savedJson[st][se][noduleData['sopid']] = [];
                             }
-                        });
-                    }),
-                ).subscribe();
-            });
+                            // 
+                            ...
+                            savedJson[st][se][noduleData['sopid']].push(some_data);
+                            ...
+                            return savedJson;
+                        }),
+                        toArray(), // [[savedJson[st][se][noduleData['sopid']][some_data]],[savedJson[st][se][noduleData['sopid']][some_data]]]
+                    ).subscribe(newJson => {
+                        if (JSON.stringify(this.oldObj) !== JSON.stringify(fval)) { // remove duplicated data
+                            this.oldObj = newJson;
+                            const keys = Object.keys(newJson[0]);
+                            from(keys).pipe(
+                                takeUntil(this.unsubscribe$),
+                                concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))),
+                                tap(key => {
+                                    const data = JSON.stringify(newJson[0][key]);
+                                    const blob = new Blob([data], {type: 'application/json'});
+                                    // save files at the download directory
+                                    saveAs(blob, key);
+                                })
+                            ).subscribe();
+                        }
+                    });
+                }),
+            ).subscribe();
         });
-    }
- 
-```
+    });
+}
