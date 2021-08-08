@@ -15,6 +15,9 @@ This page is aims to share my knowlege about rxjs techics.
 [technic2](/technic2.md)
 
 
+## Technic3
+[Creating Custom Operators](https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457)
+
 ### High quality Angular articles
 
 1. [Angular Overlay (context menu)](https://netbasal.com/context-menus-made-easy-with-angular-cdk-963797e679fc)
