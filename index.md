@@ -3,8 +3,8 @@
 This page is aims to share my knowlege about rxjs techics. 
 
 ### Technic1: 
-1. From the array, each item use as a part of url for the first http communication
-2. Result of the first http comm. must use as part or url to get the second result from remote server
+1. From the array, each item is used as a part of url for the first http communication
+2. Result of the first http communication, it is used as part or url to get the second result from remote server
 3. With the second result, get the image url.
 
 [technic1](/technic1.md)
