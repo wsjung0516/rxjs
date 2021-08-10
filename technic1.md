@@ -27,24 +27,18 @@ class SubItem {
 }
 
 getMain( data: Data) {
-    const dataList = data.itemList;     // 1. 
-    return from(dataList).pipe(
+    const itemList = data.itemList;     // 1. 
+    return from(itemList).pipe(
         takeUntil(this.unsubscribe$),
         mergeMap( item => {             // 2. 
-            const url1 = `http://${defined_host_ip}:3333/sub_items${item}`
+            const url1 = `http://${defined_host_ip}:3333/${dataList.id}/sub_items${item.id}`
             return this.http.get(url1).pipe(
                 map( val => val[0]),    // 3. 
-                toArray(),              // 4. 
-                switchMap( n_sub_items => {             // 5. 
-                    return from(n_sub_items).pipe(      // 6. 
-                        takeUntil(this.unsubscribe$),
-                        mergeMap( item => {             // 7. 
-                            const url2 =`http://${defined_hist_ip2}:3334/preview${item}`;  
-                            return this.http.get(url2, {responseType: 'blob'}).pipe( // 8. 
-                                tap( resp => {
-                                    someFunction(resp); // 9. 
-                                })
-                            )
+                switchMap( subItem => {             // 4. 
+                    const url2 =`http://${defined_hist_ip2}:3334/${itemList.id}/sub_items${item.id}/preview${subItem.id}`;  
+                    return this.http.get(url2, {responseType: 'blob'}).pipe( // 5. 
+                        tap( resp => {
+                            someFunction(resp); // 6. 
                         })
                     )
                 })
