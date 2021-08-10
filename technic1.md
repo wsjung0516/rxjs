@@ -3,15 +3,12 @@ This is the first sub md file
 
 #### Requirement:
 
-1. Getting the file infomation from SubItem source.
+1. Use the first image of each SubItem to show as a thumbnail.
 2. Data has the array of Item, but need only the first SubItem.
-3. Item has the array of File;
+3. Each SubItem has the image url;
 
 ![sample](/assets/images/technic1.png)
 
-```markdown
-
-```
 
 ```ts
 Conditions
@@ -23,10 +20,10 @@ class Data {
     itemList: Item[];
 }
 class Item {
-    sub_item: SubItem[];
+    subItem: SubItem[];
 }
 class SubItem {
-    item: File;
+    imageUrl: url;
 }
 
 getMain( data: Data) {
