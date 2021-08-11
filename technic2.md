@@ -2,41 +2,46 @@
 다수의 3차원 object를, 1차원 object(parent)를 기준으로 nested object(children), nested object (grand childrend)안의 각 object의 키 값으로 해서 3차원 배열을 만든 다음에 이 배열에 값을 저장하여, 최종적으로 그것을 물리적 저장 장치에 파일로 저장한다.
 각 차원의 object는 1:n의 구조로 다음 그림과 같다.  
 
+1. data#1, data#2 ... data#n으로 다수가 존재하고 이 data의 갯수만큼 파일이 저장된다.
+2. 각 data 에는 다수의 item이 존재하고, 각 item은 다수의 sub item이 존재한다.
+3. 각 sub item은 각 image 정보를 가지고 있다. 
+
 ![technic](/assets/images/technic2.png)
 
 ```ts
 downloadJsonData() {
     let savedJson = {};
-    return from(this.selectedStudies).pipe(
+    return from(dataList).pipe(
         takeUntil(this.unsubscribe$),
-        mergeMap((studyArray: Study) => {
-            const st = studyArray;
-            savedJson[st.suid] = {};
-            return http.get.getSeriesOfStudy(st.suid);
+        mergeMap((data: Data[]) => {
+            const da = data;
+            savedJson[da.id] = {};
+            return http.get.getSeriesOfStudy(da.id);
         }),
         // One dimensional array [a,b,c]
-    ).subscribe((seriesArray) => {
-        from(seriesArray).pipe(
+    ).subscribe((itemList) => {
+        from(itemList).pipe(
             takeUntil(this.unsubscribe$),
-            mergeMap((series) => {
-                const se = series;  // each series has series id (seid) and study id (suid)
-                savedJson[se.suid][se.seid] = {};
-                return http.get.getNodules(se.seid); // each series has multi nodule
+            mergeMap((item) => {
+                const it = item;
+                savedJson[da.id][it.id] = {};
+                return http.get.getNodules(it.id); // each series has multi nodule
             }),
             // Two dimensional array [[a,b,c],[aa,bb,cc],[aaa,bbb,ccc]]
-        ).subscribe((nodulesList: any[]) => {
-            return from(nodules).pipe(
+        ).subscribe((subItemList: any[]) => {
+            return from(subItemList).pipe(
                 takeUntil(this.unsubscribe$),
-                map(noduleData => {
-                    const st = noduleData['suid'];
-                    const se = noduleData['seid'];
+                map(subItem => {
+                    const da_id = subItem['da_id'];
+                    const it_id = subItem['it_id'];
+                    const su_id = subItem['id'];
 
-                    if (!savedJson[st][se][noduleData['sopid']]) {
-                        savedJson[st][se][noduleData['sopid']] = [];
+                    if (!savedJson[da_id][it_id][su_id]) {
+                        savedJson[da_id][it_id][su_id] = [];
                     }
                     // 
                     ...
-                    savedJson[st][se][noduleData['sopid']].push(some_data);
+                    savedJson[da_id][it_id][su_id].push(some_data);
                     ...
                     return savedJson;
                 }),
