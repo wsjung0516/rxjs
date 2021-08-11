@@ -31,12 +31,12 @@ getMain( data: Data) {
     return from(itemList).pipe(
         takeUntil(this.unsubscribe$),
         mergeMap( item => {             // 2. 
-            const url1 = `http://${defined_host_ip}:3333/${dataList.id}/sub_items${item.id}`
+            const url1 = `http://${defined_host_ip}:3333/${data.id}/sub_items${item.id}`
             return this.http.get(url1).pipe(
-                map( val => val[0]),    // 3. 
-                switchMap( subItem => {             // 4. 
-                    const url2 =`http://${defined_hist_ip2}:3334/${itemList.id}/sub_items${item.id}/preview${subItem.id}`;  
-                    return this.http.get(url2, {responseType: 'blob'}).pipe( // 5. 
+                map( val => val[0]),    // 3, 4. 
+                switchMap( subItem => {             // 5. 
+                    const url2 =`http://${defined_hist_ip2}:3334/${data.id}/sub_items${item.id}/preview${subItem.id}`;  
+                    return this.http.get(url2, {responseType: 'blob'}).pipe( 
                         tap( resp => {
                             someFunction(resp); // 6. 
                         })
@@ -47,12 +47,9 @@ getMain( data: Data) {
     ).subscribe()
 }
 ```
-1. Data has sub item list
-2. each item need to get sub_items from server without considering response sequence.
-3. This return value has multiple sub_items and only need the first item
-4. Whenver mergeMap(2) working, the result data (3) is accumulated with array format.
+1. Data has sub item list, each item has item.id
+2. Need to get subItems from server without considering response sequence.
+3. This return value has multiple subItems and only need the first item
+4. Whenver mergeMap working, the result data is accumulated with array format.
 5. After step(4), new arrary data is created, and this data baton passed to the next step.  
-6. From this step, start again the same step as 1.
-7. This step is the same as step
-8. Get the item's data.
-9. Do the final step
+6. Do the final step
