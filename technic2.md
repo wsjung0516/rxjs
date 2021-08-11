@@ -18,7 +18,7 @@ downloadJsonData() {
             savedJson[da.id] = {};
             return http.get.getSeriesOfStudy(da.id);
         }),
-        // One dimensional array [a,b,c]
+        // [{..}, {..}, {..}]
     ).subscribe((itemList) => {
         from(itemList).pipe(
             takeUntil(this.unsubscribe$),
@@ -27,14 +27,14 @@ downloadJsonData() {
                 savedJson[da.id][it.id] = {};
                 return http.get.getNodules(it.id); // each series has multi nodule
             }),
-            // Two dimensional array [[a,b,c],[aa,bb,cc],[aaa,bbb,ccc]]
+            // [{..}, {..}, {..}, {..}]
         ).subscribe((subItemList: any[]) => {
             return from(subItemList).pipe(
                 takeUntil(this.unsubscribe$),
                 map(subItem => {
                     const da_id = subItem['da_id'];
                     const it_id = subItem['it_id'];
-                    const su_id = subItem['id'];
+                    const su_id = subItem['su_id'];
 
                     if (!savedJson[da_id][it_id][su_id]) {
                         savedJson[da_id][it_id][su_id] = [];
@@ -45,7 +45,7 @@ downloadJsonData() {
                     ...
                     return savedJson;
                 }),
-                //[[savedJson[st][se][noduleData['sopid']][some_data]],[savedJson[st][se][noduleData['sopid']][some_data]]]
+                // {bla.bla.bla..: {..}}
             ).subscribe(newJson => {
                 if (JSON.stringify(this.oldObj) !== JSON.stringify(fval)) { // remove duplicated data
                     this.oldObj = newJson;
