@@ -11,14 +11,14 @@
 ```ts
 downloadJsonData() {
     let savedJson = {};
-    return from(dataList).pipe(
+    return from(dataList).pipe(             // 1.
         takeUntil(this.unsubscribe$),
-        mergeMap((data: Data[]) => {
+        mergeMap((data: Data[]) => {        // 2.
             const da = data;
             savedJson[da.id] = {};
             return http.get.getSeriesOfStudy(da.id);
         }),
-        // [{..}, {..}, {..}]
+        // [{..}, {..}, {..}]               // 3.
     ).subscribe((itemList) => {
         from(itemList).pipe(
             takeUntil(this.unsubscribe$),
@@ -32,35 +32,63 @@ downloadJsonData() {
             return from(subItemList).pipe(
                 takeUntil(this.unsubscribe$),
                 map(subItem => {
-                    const da_id = subItem['da_id'];
+                    const da_id = subItem['da_id']; // 4.
                     const it_id = subItem['it_id'];
                     const su_id = subItem['su_id'];
 
                     if (!savedJson[da_id][it_id][su_id]) {
-                        savedJson[da_id][it_id][su_id] = [];
+                        savedJson[da_id][it_id][su_id] = [];    // 5.
                     }
                     // 
                     ...
-                    savedJson[da_id][it_id][su_id].push(some_data);
+                    savedJson[da_id][it_id][su_id].push(some_data); // 6.
                     ...
                     return savedJson;
                 }),
-                // {bla.bla.bla..: {..}}
-            ).subscribe(newJson => {
-                if (JSON.stringify(this.oldObj) !== JSON.stringify(fval)) { // remove duplicated data
-                    this.oldObj = newJson;
-                    const keys = Object.keys(newJson);
-                    from(keys).pipe(
-                        takeUntil(this.unsubscribe$),
-                        concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))),
-                        tap(key => {
-                            const data = JSON.stringify(newJson[key]);
-                            const blob = new Blob([data], {type: 'application/json'});
-                            // save files at the download directory
-                            saveAs(blob, key);
-                        })
-                    ).subscribe();
+                /* // 7.
+               {da_id:
+                   {it_id: 
+                       {su_id: Array(2)
+                         0: {...}
+                         1: {...}
+                        }
+                    }
+                   {it_id: 
+                       {su_id: Array(3)
+                         0: {...}
+                         1: {...}
+                         2: {...}
+                        }
+                    }
                 }
+               {da_id:
+                   {it_id: 
+                       {su_id: Array(1)
+                         0: {...}
+                        }
+                    }
+                   {it_id: 
+                       {su_id: Array(4)
+                         0: {...}
+                         1: {...}
+                         2: {...}
+                         3: {...}
+                        }
+                    }
+                }
+            */
+            ).subscribe(newJson => {
+                const keys = Object.keys(newJson); // 8.
+                from(keys).pipe(
+                    takeUntil(this.unsubscribe$),
+                    concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))), // 9.
+                    tap(key => {
+                        const data = JSON.stringify(newJson[key]);
+                        const blob = new Blob([data], {type: 'application/json'});
+                        // save files at the download directory
+                        saveAs(blob, key); // 10.
+                    })
+                ).subscribe();
             });
         });
     });
