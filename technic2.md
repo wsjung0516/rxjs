@@ -2,7 +2,7 @@
 다수의 3차원 object를, 1차원 object(parent)를 기준으로 nested object(children), nested object (grand childrend)안의 각 object의 키 값으로 해서 3차원 배열을 만든 다음에 이 배열에 값을 저장하여, 최종적으로 그것을 물리적 저장 장치에 파일로 저장한다.
 각 차원의 object는 1:n의 구조로 다음 그림과 같다.  
 
-[technic]('/assets/images/technic2.md)
+[technic](/assets/images/technic2.png)
 
 ```ts
 downloadJsonData() {
