@@ -11,41 +11,41 @@
 ```ts
 downloadJsonData() {
     let savedJson = {};
-    return from(dataList).pipe(             // 1.
+    return from(dataList).pipe(                 // 1.
         takeUntil(this.unsubscribe$),
-        mergeMap((data: Data[]) => {        // 2.
+        mergeMap((data: Data[]) => {            // 2.
             const da = data;
-            savedJson[da.id] = {};
+            savedJson[da.id] = {};              // 3
             return http.get.getSeriesOfStudy(da.id);
         }),
-        // [{..}, {..}, {..}]               // 3.
+        // [{..}, {..}, {..}]                   // 4.
     ).subscribe((itemList) => {
         from(itemList).pipe(
             takeUntil(this.unsubscribe$),
             mergeMap((item) => {
                 const it = item;
-                savedJson[da.id][it.id] = {};
-                return http.get.getNodules(it.id); // each series has multi nodule
+                savedJson[da.id][it.id] = {};    // 5.
+                return http.get.getNodules(it.id); 
             }),
             // [{..}, {..}, {..}, {..}]
         ).subscribe((subItemList: any[]) => {
             return from(subItemList).pipe(
                 takeUntil(this.unsubscribe$),
                 map(subItem => {
-                    const da_id = subItem['da_id']; // 4.
+                    const da_id = subItem['da_id']; // 6.
                     const it_id = subItem['it_id'];
                     const su_id = subItem['su_id'];
 
                     if (!savedJson[da_id][it_id][su_id]) {
-                        savedJson[da_id][it_id][su_id] = [];    // 5.
+                        savedJson[da_id][it_id][su_id] = [];        // 7.
                     }
                     // 
                     ...
-                    savedJson[da_id][it_id][su_id].push(some_data); // 6.
+                    savedJson[da_id][it_id][su_id].push(some_data); // 8.
                     ...
                     return savedJson;
                 }),
-                /* // 7.
+                /* // 9.
                {da_id:
                    {it_id: 
                        {su_id: Array(2)
@@ -78,15 +78,15 @@ downloadJsonData() {
                 }
             */
             ).subscribe(newJson => {
-                const keys = Object.keys(newJson); // 8.
+                const keys = Object.keys(newJson); // 10.
                 from(keys).pipe(
                     takeUntil(this.unsubscribe$),
-                    concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))), // 9.
+                    concatMap(key => of(key).pipe(takeUntil(this.unsubscribe$),delay(100))), // 11.
                     tap(key => {
                         const data = JSON.stringify(newJson[key]);
                         const blob = new Blob([data], {type: 'application/json'});
                         // save files at the download directory
-                        saveAs(blob, key); // 10.
+                        saveAs(blob, key); // 12.
                     })
                 ).subscribe();
             });
@@ -94,3 +94,17 @@ downloadJsonData() {
     });
 }
 ```
+1. 복수개의 data를 Array로 입력하여 처리한다.
+2. 각 data처리는 Async 통신의 출력 순서와 상관 없으므로 한개씩 처리한다.
+3. 최종값을 저장할 Object에 첫번째 key 값은 만든다.
+4. 처리결과는 Array가된다.
+5. 최종값을 저장할 Object에 두번째 key값을 만든다.
+6. 각 subItem은 parent의 키 값을 가지고 있다. 
+7. 최종값을 저장할 Object에 세번째 key값을 만든다.
+8. 최종값을 저장할 Object에 함수 수행의 결과 값을 저장한다. 
+9. 함수 수행의 결과 값이 저장된 Object의 구조이다 (console.log 로 표시한 값)
+10. 최종결과 값을 파일로 저장해야되는데, 복수개의 data를 처리하는 경우 복수개의 file을 local storage에 
+    저장할 때 비동기로 이루어지면, 
+11. 화일을 local 에 저장하는 경우 저장이 완료되었는지 결과 값을 받을 수 없으므로, 다음 순서를 임의의 시간 뒤에, 순차적으로 기록하도록 한다.
+12. 최종 값을 file로 저장한다.
+    
