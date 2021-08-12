@@ -53,3 +53,4 @@ getMain( data: Data) {
 4. Whenver mergeMap working, the result data is accumulated with array format.
 5. After step(4), new arrary data is created, and this data baton passed to the next step.  
 6. Do the final step
+7. [[link]]
