@@ -1,15 +1,25 @@
 
 
 ![image1](assets/images/split-window1.png)
-- case 1: grid no is one split window,
+For each split window has it's own element id like as ( element1, element2, element3, element4)
+following snippet replace it as selectedElementId
+
+- case 1: One split window,
 	When get the grid size, start to image rendering.
-- case 2: grid no is multi split window.
+- case 2: Multi split window. (2 or 3 or 4)
 	1. When get the grid size, start to rendering from the first split window.
 	 2. The next split window wait until the previous split window completing rendering.
 
-
+---
 
 ![image2](assets/images/split-window2.png)
+
+Using zip operator (rxjs) to wait the next process complete.
+1. isStartedRendering: status of after initial setting for starting rendering.
+2. isFinishedRendering: status of complete rendering and related side job. 
+3. above step 1. and step 2. job is completed.
+4. When user select grid type, create this observable for wating above step 3. 
+5. After step3 and step4 is completing, one of split window processing is completed.
 
 ```ts
     private renderingSplitWindows() {
@@ -69,7 +79,7 @@
     private initializeNgInit() {
         const rendering$: Observable<any> = this.requestSplitWindow$[this.selectedElementId];
                                                                     // 8
-        zip(this.tempObservable, rendering$, isInitialLoading$).pipe(   // 9
+        zip(this.tempObservable, rendering$).pipe(   // 9
             take(1),
             tap((val) => {
                 const data = {selectedElementId: val[1]};
@@ -83,3 +93,4 @@
         });
   }
 ```
+1. 
