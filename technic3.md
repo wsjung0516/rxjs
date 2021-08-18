@@ -1,5 +1,7 @@
 
+![image1](assets/images/split-window1.png)
 
+![image2](assets/images/split-window2.png)
 
 ```ts
     private renderingSplitWindows() {
