@@ -15,11 +15,15 @@ following snippet replace it as selectedElementId
 ![image2](assets/images/split-window2.png)
 
 Using zip operator (rxjs) to wait the next process complete.
+case1: One split window.
+1. Just after taking grid type, start rendering. 
+
+case2: Multi split window.
 1. isStartedRendering: status of after initial setting for starting rendering.
 2. isFinishedRendering: status of complete rendering and related side job. 
 3. above step 1. and step 2. job is completed.
 4. When user select grid type, create this observable for wating above step 3. 
-5. After step3 and step4 is completing, one of split window processing is completed.
+5. After step3 and step4 is completing, it means one of split window processing is completed.
 ---
 
 ```ts
