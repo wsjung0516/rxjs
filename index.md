@@ -15,7 +15,10 @@ This page is aims to share my knowlege about rxjs techics.
 [technic2](/technic2.md)
 
 
-## Technic3
+### Technic3:
+[technic3](/technic3.md)
+
+### Technic4
 [Creating Custom Operators](https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457)
 
 ### High quality RxJS articles
