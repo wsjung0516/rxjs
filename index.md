@@ -18,12 +18,19 @@ This page is aims to share my knowlege about rxjs techics.
 ### Technic3:
 [technic3](/technic3.md)
 
-### Technic4
-[Creating Custom Operators](https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457)
-
 ### High quality RxJS articles
 
 1. [RxJS Cached](https://blog.thoughtram.io/angular/2018/03/05/advanced-caching-with-rxjs.html )
+2. [Creating Custom Operators](https://netbasal.com/creating-custom-operators-in-rxjs-32f052d69457)
+3. [Partition, shareReplay, concatMapTo](https://netbasal.com/use-rxjs-to-modify-app-behavior-based-on-page-visibility-ce499c522be4)
+4. [Reactive Sticky Header in Angular](https://netbasal.com/reactive-sticky-header-in-angular-12dbffb3f1d3)
+5. [Reactive Search Feature with Angular](https://medium.com/lapis/searching-through-a-list-reactively-in-angular-c61c9d1832df)
+6. [Observableinput](https://medium.com/javascript-everyday/rxjs-observableinput-dbc9c7035adc)
+7. [15 Technics](https://sentinelone-tech.medium.com/15-rxjs-awesome-tips-from-15-sentinels-84ad132b13fd)
+8. [3 Ways To Handle Errors in RxJS](https://medium.com/javascript-in-plain-english/3-ways-to-handle-errors-in-rxjs-97a04f2ecdc)
+9. [Multicast](https://netbasal.com/understanding-rxjs-multicast-operators-77b3f60af0a2)
+10.[Defer](https://netbasal.com/getting-to-know-the-defer-observable-in-rxjs-a16f092d8c09)
+
 
 
 
