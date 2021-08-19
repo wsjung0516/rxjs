@@ -33,7 +33,7 @@ case2: Multi split window.
 4. When user select grid type, create this observable for wating above step 3. 
 5. After step3 and step4 is completing, it means one of split window processing is completed.
 ---
-![image2](assets/images/split-window2.png)
+![image3](assets/images/split-window3.png)
 
 
 ---
