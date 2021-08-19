@@ -43,6 +43,7 @@ Using zip operator (rxjs) to wait the next process complete.
 4. isStarted$
 5. Check if this is the final process of grid no. if not, continue next split window process. 
 6. Process end of rendering split window 
+
 ---
 
 ```ts
