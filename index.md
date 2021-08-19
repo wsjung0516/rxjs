@@ -1,6 +1,6 @@
 ## Welcome to William's Notes
 
-This page is aims to share my knowlege about rxjs techics. 
+This page is aims to share my knowlege about rxjs technics. 
 
 ### Technic1: 
 1. From the array, each item is used as a part of url  to get the second result through async communication
