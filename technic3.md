@@ -23,23 +23,28 @@ following snippet replace it as selectedElementId
 ![image2](assets/images/split-window2.png)
 
 Using zip operator (rxjs) to wait the next process complete.
-case1: One split window.
+
+- case1: One split window.
 1. Just after taking grid type, start rendering. 
 
-case2: Multi split window.
+- case2: Multi split window.
 1. isStartedRendering: status of after initial setting for starting rendering.
 2. isFinishedRendering: status of complete rendering and related side job. 
 3. above step 1. and step 2. job is completed.
 4. When user select grid type, create this observable for wating above step 3. 
 5. After step3 and step4 is completing, it means one of split window processing is completed.
+
 ---
 ![image3](assets/images/split-window3.png)
 
-
+1. Start with new html element id
+2. currentCtViewerElementId$
+3. isFinished$
+4. isStarted$
+5. Check if this is the final process of grid no. if not, continue next split window process. 
+6. Process end of rendering split window 
 ---
 
-
->>>>>>> Stashed changes
 ```ts
     renderingSplitWindows() {
         /**
@@ -105,7 +110,6 @@ case2: Multi split window.
                 this.store.dispatch(new SetSelectedElementId(data));
             })
         ).subscribe((val) => {
-            /** Start processing ct-viewer after finished processing for previous split window*/
             this.renderingCtViewerSplitWindow(val[1]);              // 10
         });
   }
@@ -117,7 +121,9 @@ showSelectedSeriesToViewer
 2. then reserve element id as selectedElementId, which can tell which split window is processing. 
 3. and wait process reach the final state.
 4. Same as above step 1,2,3 except waiting the process reach the start state.
-5. make observable for each element, which can be used parameter of zip operator (rxjs), 
-6. Each split window has it's own element like as ( element1, element2, element3, element4 )
-7. From the first split window, make the observale for element1 like renderingSplitWind['element1'];
-8. This observable is used for waiting the end of the first split window complete rendering.  
+5. If multiple grid then start to check first grid.
+6. Because this is the second split window, element of previouse split window must be element1. (isStarted$isFinished$ for element2, isStarted$ for element1), 
+7. When select one grid (one split window), there is not need to step5 and step 6.
+8. Make observable for each element for waiting rendering previous split window, which can be used parameter of zip operator (rxjs),  
+9. rendering$ and tempObservable can be the signal of rendering split window by the zip operator. 
+10. Start processing ct-viewer after finished processing for previous split window  
