@@ -37,8 +37,11 @@ case2: Multi split window.
 
 
 ---
+
+
+>>>>>>> Stashed changes
 ```ts
-    private renderingSplitWindows() {
+    renderingSplitWindows() {
         /**
          * When it comes to rendering of split-windows,
          * each window need to wait until the previous window finished rendering.
