@@ -41,7 +41,7 @@ Just the time the previous split window start to cache, next split window start 
 7. [15 Technics](https://sentinelone-tech.medium.com/15-rxjs-awesome-tips-from-15-sentinels-84ad132b13fd)
 8. [3 Ways To Handle Errors in RxJS](https://medium.com/javascript-in-plain-english/3-ways-to-handle-errors-in-rxjs-97a04f2ecdc)
 9. [Multicast](https://netbasal.com/understanding-rxjs-multicast-operators-77b3f60af0a2)
-10.[Defer](https://netbasal.com/getting-to-know-the-defer-observable-in-rxjs-a16f092d8c09)
+10. [Defer](https://netbasal.com/getting-to-know-the-defer-observable-in-rxjs-a16f092d8c09)
 
 
 
