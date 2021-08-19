@@ -1,6 +1,11 @@
-
+### Condition
+1. User can select randomly, one grid, two or three or four.
+2. One grid, then element id is element1
+3. Two grids, then elements are element1 element2, each elements is inputed to next process sequencially, which means three grids are element1, element2, element3
+4. If two grids slected, process of element2 have to wait until element1 is completing process.
 
 ![image1](assets/images/split-window1.png)
+
 For each split window has it's own element id like as ( element1, element2, element3, element4)
 following snippet replace it as selectedElementId
 
