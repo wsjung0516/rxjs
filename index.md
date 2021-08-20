@@ -16,21 +16,20 @@ This page is aims to share my knowlege about rxjs technics.
 1. 3 step nested object, parent has children (nested objects) and children has childrend (nested objects)
 2. There are many parents, 
 3. Grand children has a image address
-4. Finally, image addresses need to be saved as a file, which has all the relation from parent to child,\
-   to local stoarage with the name of parent id. 
+4. Finally, image addresses need to be saved as a file, which has all the relation from parent to child. 
 
 ![](/assets/images/technic2-1.png)
 
 [Detail diagram](/technic2.md)
 
 ### Technic3:
-1. User can select randomly, one grid, two or three or four.
+1. User can select grid type randomly, one grid, two or three or four.
 2. One grid type is selected, then html element id is element1, which can be a canvas area for drawing.
-3. Two grids type are selected, then html elements are element1 element2, each elements is inputed to next process sequencially.
+3. Two grids type are selected, then html elements are element1 element2, each elements is passed to next process sequencially.
 4. Two grids type are selected, process of element2 have to wait until element1 is completing rendering process.
 5. Each split window has multiple images, which is got from server by async communication.
 6. Each split window display only one image and others are cached
-7. When multi grid type is selected, just the time the previous split window start to cache after display the first image, next split window start to rendering process.
+7. When multi grid type is selected, while the previous split window start to cache after display the first image, next split window start to rendering process.
 
 ![](/assets/images/split-window1-1.png)
 
