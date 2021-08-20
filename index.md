@@ -13,24 +13,23 @@ This page is aims to share my knowlege about rxjs technics.
 
 
 ### Technic2:
-다수의 3차원 object를, 1차원 object(parent)를 기준으로 nested object(children), nested object (grand childrend)안의 각 object의 키 값으로 해서 3차원 배열을 만든 다음에 이 배열에 값을 저장하여, 최종적으로 그것을 물리적 저장 장치에 파일로 저장한다. 각 차원의 object는 1:n의 구조로 다음 그림과 같다.
-
-data#1, data#2 … data#n으로 다수가 존재하고 이 data의 갯수만큼 파일이 저장된다.
-각 data 에는 다수의 item이 존재하고, 각 item은 다수의 sub item이 존재한다.
-각 sub item은 각 image 정보를 가지고 있다.
+1. 3 step nested object, parent has children (nested objects) and children has childrend (nested objects)
+2. There are many parents, 
+3. Grand children has a image address
+4. Finally, images need to be saved with based on each parent. 
 
 ![](/assets/images/technic2-1.png)
 
 [Detail diagram](/technic2.md)
 
 ### Technic3:
-User can select randomly, one grid, two or three or four.
-One grid, then html element id is element1, which can be a canvas area for drawing.
-Two grids, then html elements are element1 element2, each elements is inputed to next process sequencially.
-If two grids slected, process of element2 have to wait until element1 is completing process.
-Each sprit window has multiple images, which is got from server by async communication.
-Each sprit window display one page of ct-image and others are cached or in the middle of caching process.
-Just the time the previous split window start to cache, next split window start to rendering.
+1. User can select randomly, one grid, two or three or four.
+2. One grid type is selected, then html element id is element1, which can be a canvas area for drawing.
+3. Two grids type are selected, then html elements are element1 element2, each elements is inputed to next process sequencially.
+4. Two grids type are aslected, process of element2 have to wait until element1 is completing rendering process.
+5. Each sprit window has multiple images, which is got from server by async communication.
+6. Each sprit window display only one image and others are cached
+7. When multil grid type is selected, just the time the previous split window start to cache, next split window start to rendering process from beggining.
 
 ![](/assets/images/split-window1-1.png)
 
