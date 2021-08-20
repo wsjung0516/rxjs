@@ -28,9 +28,9 @@ This page is aims to share my knowlege about rxjs technics.
 2. One grid type is selected, then html element id is element1, which can be a canvas area for drawing.
 3. Two grids type are selected, then html elements are element1 element2, each elements is inputed to next process sequencially.
 4. Two grids type are selected, process of element2 have to wait until element1 is completing rendering process.
-5. Each sprit window has multiple images, which is got from server by async communication.
-6. Each sprit window display only one image and others are cached
-7. When multi grid type is selected, just the time the previous split window start to cache after display the first image, next split window start to rendering process from beggining.
+5. Each split window has multiple images, which is got from server by async communication.
+6. Each split window display only one image and others are cached
+7. When multi grid type is selected, just the time the previous split window start to cache after display the first image, next split window start to rendering process.
 
 ![](/assets/images/split-window1-1.png)
 
