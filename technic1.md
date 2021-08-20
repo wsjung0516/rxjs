@@ -1,11 +1,11 @@
-This is the first sub md file
 ### Technic 1
 
 #### Requirement:
 
-1. Use the first image of each SubItem to show as a thumbnail.
-2. Data has the array of Item, but need only the first SubItem.
-3. Each SubItem has the image url;
+1. Get the image from the first SubItem to make a thumbnail, which means only one image is enough.
+2. Data (root object) has children object(Item), Item has children object(SubItem).
+3. If data has five childrend(Item), it has five thumbnail image. that is need to display.
+4. Each SubItem has the image url;
 
 ![sample](/assets/images/technic1.png)
 
@@ -14,7 +14,6 @@ This is the first sub md file
 Conditions
 1. Need to connect to remote server that has the data.
 2. Consider async communication to get the data through http connection
-3. Three step nested structure, first and second step has each children;
 
 class Data {
     itemList: Item[];
@@ -47,9 +46,9 @@ getMain( data: Data) {
     ).subscribe()
 }
 ```
-1. Data has sub item list, each item has item.id
+1. Data has item list, each item has item.id
 2. Need to get subItems from server without considering response sequence.
-3. This return value has multiple subItems and only need the first item
-4. Whenver mergeMap working, the result data is accumulated with array format.
+3. This return value has multiple subItems, but only the first one is needed
+4. operator mergeMap makes result as array format.
 5. After step(4), new arrary data is created, and this data baton passed to the next step.  
 6. Do the final step
