@@ -7,7 +7,7 @@ This page is aims to share my knowlege about rxjs technics.
 2. Result of the first async communication, it is used as part or url to get the second result from remote server
 3. With the second result, get the image url.
 
-![](/assets/images/technic1-1.png)
+![](assets/images/technic1-1.png)
 
 [Detail diagram](/technic1.md)
 
@@ -18,7 +18,7 @@ This page is aims to share my knowlege about rxjs technics.
 3. Grand children has a image address
 4. Finally, image addresses need to be saved as a file, which has all the relation from parent to child. 
 
-![](/assets/images/technic2-1.png)
+![](assets/images/technic2-1.png)
 
 [Detail diagram](/technic2.md)
 
@@ -31,7 +31,7 @@ This page is aims to share my knowlege about rxjs technics.
 6. Each split window display only one image and others are cached
 7. When multi grid type is selected, while the previous split window start to cache after display the first image, next split window start to rendering process.
 
-![](/assets/images/split-window1-1.png)
+![](assets/images/split-window1-1.png)
 
 [Detail Diagram](/technic3.md)
 
