@@ -23,8 +23,9 @@ For each split window has it's own element id like as ( element1, element2, elem
 
 Using zip operator (rxjs) to wait the next process complete.
 
-- case1: One split window.
-1. Just after taking grid type, start rendering. 
+- case1: One split window.  
+
+1. Above diagram, step 3 is already made, step 4 is mader just the time when grid type1 is selected.
 
 - case2: Multi split window.
 1. isStartedRendering: status of starting rendering. Should check if element id of previous split window is the same with id of isFinishedRendering$ value. 
