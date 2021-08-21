@@ -32,7 +32,7 @@ Using zip operator (rxjs) to wait the next process complete.
 2. isFinishedRendering: status of complete rendering and related side job. 
 3. above step 1. and step 2. job is completed.
 4. When user select grid type, create this observable for wating above step 3. 
-5. After step3 and step4 is completing, it means one of split window processing is ready to start.
+5. When step3 and step4 is completing, it means one of next split window processing is ready to start.
 
 ---
 ![image3](assets/images/split-window3.png)
