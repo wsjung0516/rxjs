@@ -24,12 +24,12 @@ This page is aims to share my knowlege about rxjs technics.
 
 ### Technic3:
 1. User can select grid type randomly, one grid, two or three or four.
-2. One grid type is selected, then html element id is element1, which can be a canvas area for drawing.
-3. Two grids type are selected, then html elements are element1 element2, each elements is passed to next process sequencially.
-4. Two grids type are selected, process of element2 have to wait until element1 is completing rendering process.
+2. Grid type1 is selected, then html element id is element1, which can be a canvas area for drawing.
+3. Grid type2 is selected, then html elements are element1 element2, each elements is passed to next process sequencially.
+4. Grid type2 is selected, process of element2 have to wait until element1 is completing rendering process.
 5. Each split window has multiple images, which is got from server by async communication.
 6. Each split window display only one image and others are cached
-7. When multi grid type is selected, while the previous split window start to cache after display the first image, next split window start to rendering process.
+7. When multi grid type is selected, while the previous split window start to cache after displaying the first image, next split window start to rendering process.
 
 ![](assets/images/split-window1-1.png)
 
