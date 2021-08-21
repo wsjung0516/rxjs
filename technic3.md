@@ -1,21 +1,20 @@
 ### Condition
-1. User can select randomly, one grid, two or three or four.
-2. One grid, then html element id is element1, which can be a canvas area for drawing.
-3. Two grids, then html elements are element1 element2, each elements is inputed to next process sequencially.
-4. If two grids slected, process of element2 have to wait until element1 is completing process.
-5. Each sprit window has multiple images, which is got from server by async communication.
-6. Each sprit window display one page of ct-image and others are cached or in the middle of caching process. 
-7. Just the time the previous split window start to cache, next split window start to rendering.
+1. User can select grid type randomly, one grid, two or three or four.
+2. Grid type1 is selected, then html element id is element1, which can be a canvas area for drawing.
+3. Grid type2 is selected, then html elements are element1 element2, each elements is passed to next process sequencially.
+4. Grid type2 is selected, process of element2 have to wait until element1 is completing rendering process.
+5. Each split window has multiple images, which is got from server by async communication.
+6. Each split window display only one image and others are cached
+7. When multi grid type is selected, while the previous split window start to cache after displaying the first image, next split window start to rendering process.
 
 ![image1](assets/images/split-window1.png)
 
 For each split window has it's own element id like as ( element1, element2, element3, element4)
-following snippet replace it as selectedElementId
 
-- case 1: One split window,
-	When get the grid size, start to image rendering.
-- case 2: Multi split window. (2 or 3 or 4)
-	1. When get the grid size, start to rendering from the first split window.
+- case 1: One split window (Grid type 1),
+	With defined grid size, template and element id, start to image rendering.
+- case 2: Multi split window. (Grid type 2, Grid type 3, Grid type 4)
+	1. With defined grid size, template and element id, start to rendering from the first split window.
 	 2. The next split window wait until the previous split window completing rendering.
 
 ---
@@ -28,35 +27,26 @@ Using zip operator (rxjs) to wait the next process complete.
 1. Just after taking grid type, start rendering. 
 
 - case2: Multi split window.
-1. isStartedRendering: status of after initial setting for starting rendering.
+1. isStartedRendering: status of starting rendering. Should check if element id of previous split window is the same with id of isFinishedRendering$ value. 
 2. isFinishedRendering: status of complete rendering and related side job. 
 3. above step 1. and step 2. job is completed.
 4. When user select grid type, create this observable for wating above step 3. 
-5. After step3 and step4 is completing, it means one of split window processing is completed.
+5. After step3 and step4 is completing, it means one of split window processing is ready to start.
 
 ---
 ![image3](assets/images/split-window3.png)
 
 1. Start with new html element id
-2. currentCtViewerElementId$
-3. isFinished$
-4. isStarted$
+2. currentCtViewerElementId$: Observale that get the signal of start or end rendering.
+3. isStarted$
+4. isFinished$
 5. Check if this is the final process of grid no. if not, continue next split window process. 
-6. Process end of rendering split window 
+6. End of rendering split window 
 
 ---
 
 ```ts
     renderingSplitWindows() {
-        /**
-         * When it comes to rendering of split-windows,
-         * each window need to wait until the previous window finished rendering.
-         * -----------------
-         * 1. The end of redering process of the first image, emit event of "isStartedRendering$" for each split window.
-         * 2. As soon as take the event of "isStartedRendering$" start processing some functions
-         * 3. After end of processing some functionsmaking series-list, nodule-list, emit event of "isFinishedRendering$"
-         *    for each split window.
-         * */
         const isFinished$ = this.currentCtViewerElementId$.pipe(     // 1
             switchMap(val => {
                 this.selectedElementId = val.selectedElementId;     // 2
@@ -76,19 +66,19 @@ Using zip operator (rxjs) to wait the next process complete.
         );
         // 
         if ( gridNo > 1 ) {
-            if (this.selectedElementId === '#dicomImage') {         // 5
+            if (this.selectedElementId === 'element1') {         // 5
                 this.tempObservable = defer(() => of(EMPTY).pipe());
-            } else if (this.selectedElementId === '#dicomImage01') {
-                this.tempObservable = zip(isFinished$, isStarted$).pipe(  
-                    filter(val => val[1] === '#dicomImage'),        // 6
+            } else if (this.selectedElementId === 'element2') {
+                this.tempObservable = zip(isStarted$, isFinished$).pipe(  //['element2','element1']
+                    filter(val => val[1] === 'element1'),        // 6
                 );
-            } else if (this.selectedElementId === '#dicomImage02') {
-                this.tempObservable = zip(isFinished$, isStarted$).pipe(
-                    filter(val => val[1] === '#dicomImage01'),
+            } else if (this.selectedElementId === 'element3') {
+                this.tempObservable = zip(isStarted$, isFinished$).pipe( //['element3','element2']
+                    filter(val => val[1] === 'element2'),
                 );
-            } else if (this.selectedElementId === '#dicomImage03') {
-                this.tempObservable = zip(isFinished$, isStarted$).pipe(
-                    filter(val => val[1] === '#dicomImage02'),
+            } else if (this.selectedElementId === 'element4') {
+                this.tempObservable = zip(isStarted$, isFinished$).pipe( //['element4','element3']
+                    filter(val => val[1] === 'element3'),
                 );
             }
         } else { // only one split window
@@ -99,7 +89,7 @@ Using zip operator (rxjs) to wait the next process complete.
 ```
 
 ```ts
-    private initializeNgInit() {
+    private initialize() {
         const rendering$: Observable<any> = this.requestSplitWindow$[this.selectedElementId];
                                                                     // 8
         zip(this.tempObservable, rendering$).pipe(   // 9
@@ -119,12 +109,12 @@ showSelectedSeriesToViewer
 	this.store.dispatch(new SetSelectedCtViewer(data)) --> currentCtViewerElementId$
 	
 1. currentCtViewerElementId$, when process arrive at the proper position of checking then make observable
-2. then reserve element id as selectedElementId, which can tell which split window is processing. 
+2. then reserve element id, which can tell which split window is processing. 
 3. and wait process reach the final state.
 4. Same as above step 1,2,3 except waiting the process reach the start state.
-5. If multiple grid then start to check first grid.
-6. Because this is the second split window, element of previouse split window must be element1. (isStarted$isFinished$ for element2, isStarted$ for element1), 
-7. When select one grid (one split window), there is not need to step5 and step 6.
+5. If multiple grid type is selected, start to check from first grid.
+6. Because this is the second split window, element of previouse split window must be element1. (isFinished$ === element1, isStarted$ === element2), 
+7. When Grid type1 is selected (one split window), there is no need to step5 and step 6.
 8. Make observable for each element for waiting rendering previous split window, which can be used parameter of zip operator (rxjs),  
 9. rendering$ and tempObservable can be the signal of rendering split window by the zip operator. 
 10. Start processing ct-viewer after finished processing for previous split window  
