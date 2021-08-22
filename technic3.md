@@ -1,46 +1,46 @@
 ### Condition
-1. User can select grid type randomly, one grid, two or three or four.
-2. Grid type1 is selected, then html element id is element1, which can be a canvas area for drawing.
-3. Grid type2 is selected, then html elements are element1 element2, each elements is passed to next process sequencially.
-4. Grid type2 is selected, process of element2 have to wait until element1 is completing rendering process.
-5. Each split window has multiple images, which is got from server by async communication.
-6. Each split window display only one image and others are cached
-7. When multi grid type is selected, while the previous split window start to cache after displaying the first image, next split window start to rendering process.
+1. The user can select the grid type randomly: one, two, three, or four grids.
+2. If grid type1 is selected, then the html element id is element1, which can be a canvas area for drawing.
+3. If grid type2 is selected, then the html elements are element1 element2, each element is passed on to the next process sequentially.
+4. If grid type2 is selected, the process of element2 has to wait until the rendering process or element1 is complete.
+5. Each split window has multiple images, which is obtained from the server by async communication.
+6. Each split window displays only one image and others are cached.
+7. When multi grid type is selected, while the previous split window starts to cache after displaying the first image, the next split window starts the rendering process.
 
 ![image1](assets/images/split-window1.png)
 
-For each split window has it's own element id like as ( element1, element2, element3, element4)
+Each split window has its own element id, like ( element1, element2, element3, element4)
 
 - case 1: One split window (Grid type 1),
-	With defined grid size, template and element id, start to image rendering.
+	With defined grid size, template and element id, start image rendering.
 - case 2: Multi split window. (Grid type 2, Grid type 3, Grid type 4)
-	1. With defined grid size, template and element id, start to rendering from the first split window.
-	 2. The next split window wait until the previous split window completing rendering.
+	1. With defined grid size, template and element id, start rendering from the first split window.
+	 2. The next split window waits until the previous split window completes rendering.
 
 ---
 
 ![image2](assets/images/split-window2.png)
 
-Using zip operator (rxjs) to wait the next process complete.
+Using zip operator (rxjs) to wait until the next process is complete.
 
 - case1: One split window.  
-1. Above diagram, step 3 is already made, step 4 is mader just the time when grid type1 is selected.
+1. Above diagram, step 3 is already made, step 4 is made just the time when grid type1 is selected.
 
 - case2: Multi split window.
 1. isStartedRendering: status of starting rendering. Should check if element id of previous split window is the same with id of isFinishedRendering$ value. 
 2. isFinishedRendering: status of complete rendering and related side job. 
 3. above step 1. and step 2. job is completed.
-4. When user select grid type, create this observable for wating above step 3. 
+4. When user select grid type, create this observable for waiting above step 3. 
 5. When step3 and step4 is completing, it means one of next split window processing is ready to start.
 
 ---
 ![image3](assets/images/split-window3.png)
 
 1. Start with new html element id
-2. currentCtViewerElementId$: Observale that get the signal of start or end rendering.
+2. currentCtViewerElementId$: Observable that gets the signal of start or end rendering.
 3. isStarted$
 4. isFinished$
-5. Check if this is the final process of grid no. if not, continue next split window process. 
+5. Check if this is the final process of grid no. If not, continue next split window process. 
 6. End of rendering split window 
 
 ---
