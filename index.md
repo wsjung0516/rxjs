@@ -1,11 +1,11 @@
 ## Welcome to RxJS Notes
 
-This page is aims to share my knowlege about rxjs technics. 
+This page aims to share my knowlege about rxjs technics. 
 
 ### Technic1: 
-1. From the array, each item is used as a part of url  to get the first result through async communication
-2. Result of the first async communication, it is used as part or url to get the second result from remote server
-3. With the second result, get the image url.
+1. Each item in the array is used as a part of the url to get the first result through asynchronous communication.
+2. The result of the first async communication is used in the url to get the second result from the remote server.
+3. Get the image url with the second result.
 
 ![](assets/images/technic1-1.png)
 
@@ -13,9 +13,9 @@ This page is aims to share my knowlege about rxjs technics.
 
 
 ### Technic2:
-1. 3 step nested object, parent has children (nested objects) and children has childrend (nested objects)
+1. Nested object with 3 layers, parent has children (nested objects) and child has grandchildren (nested objects).
 2. There are many parents, 
-3. Grand children has a image address
+3. A grandchild node has an image address.
 4. Finally, image addresses need to be saved as a file, which has all the relation from parent to child. 
 
 ![](assets/images/technic2-1.png)
@@ -23,13 +23,13 @@ This page is aims to share my knowlege about rxjs technics.
 [Detail diagram](/technic2.md)
 
 ### Technic3:
-1. User can select grid type randomly, one grid, two or three or four.
-2. Grid type1 is selected, then html element id is element1, which can be a canvas area for drawing.
-3. Grid type2 is selected, then html elements are element1 element2, each elements is passed to next process sequencially.
-4. Grid type2 is selected, process of element2 have to wait until element1 is completing rendering process.
-5. Each split window has multiple images, which is got from server by async communication.
-6. Each split window display only one image and others are cached
-7. When multi grid type is selected, while the previous split window start to cache after displaying the first image, next split window start to rendering process.
+1. The user can select the grid type randomly: one, two, three, or four grids.
+2. If grid type1 is selected, then the html element id is element1, which can be a canvas area for drawing.
+3. If grid type2 is selected, then the html elements are element1 and element2. Each element is passed on to the next process sequentially.
+4. If grid type2 is selected, the process of element2 has to wait until the rendering process for element1 is complete.
+5. Each split window has multiple images, which are obtained from the server through asynchronous communication.
+6. Each split window displays only one image and others are cached.
+7. When multi grid type is selected, while the previous split window starts to cache after displaying the first image, the next split window starts the rendering process.
 
 ![](assets/images/split-window1-1.png)
 
