@@ -1,10 +1,10 @@
 ### Technic 1
 
-#### Requirement:
+#### Requirements:
 
 1. Get the image from the first SubItem to make a thumbnail, which means only one image is enough.
-2. Data (root object) has children object(Item), Item has children object(SubItem).
-3. If data has five childrend(Item), it has five thumbnail image. that is need to display.
+2. Data (root object) has child objects(Item), Item has child objects(SubItem).
+3. If data has five children(Item), it has five thumbnail images that needs to be displayed.
 4. Each SubItem has the image url;
 
 ![sample](/assets/images/technic1.png)
@@ -46,9 +46,9 @@ getMain( data: Data) {
     ).subscribe()
 }
 ```
-1. Data has item list, each item has item.id
-2. Need to get subItems from server without considering response sequence.
-3. This return value has multiple subItems, but only the first one is needed
-4. operator mergeMap makes result as array format.
-5. After step(4), new arrary data is created, and this data baton passed to the next step.  
-6. Do the final step
+1. Data has item list; each item has item.id.
+2. subItems need to be obtained from the server without considering the response sequence.
+4. This return value has multiple subItems, but only the first one is needed.
+5. operator mergeMap converts the result into an array format.
+6. After step(4), new array data is created, and this data is passed to the next step.  
+7. Do the final step.
